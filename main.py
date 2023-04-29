@@ -11,7 +11,6 @@ import uvicorn
 import logging
 
 app = FastAPI()
-DATABASE_URL = "postgres://postgres:10272@localhost:5432/films"
 
 app.add_middleware(
     CORSMiddleware,
