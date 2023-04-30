@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [master]
+    branches: [changes]
 jobs:
   build:
     name: Check and Build
