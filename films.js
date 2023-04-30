@@ -1,14 +1,16 @@
 const API_URL = "http://localhost:8000";
 
-function createList(items) {
-    const ul = document.createElement("ul");
-    for (const item of items) {
-        const li = document.createElement("li");
-        li.textContent = item;
-        ul.appendChild(li);
+
+function getRatingColor(rating) {
+    if (rating >= 7) {
+        return 'green';
+    } else if (rating >= 4) {
+        return 'grey';
+    } else {
+        return 'red';
     }
-    return ul;
-};
+}
+
 
 async function fetchFilms() {
     const response = await fetch(`${API_URL}/films`);
@@ -25,24 +27,9 @@ async function fetchFilms() {
     for (const film of films) {
         const filmDiv = document.createElement("div");
         filmDiv.className = "film";
-        filmDiv.innerHTML = `
-            <h3>${film.title}</h3>
-            <p>Director: ${film.director}</p>
-            <p>Year: ${film.year}</p>
-            <p>Description: ${film.description}</p>
-            <p>Length: ${film.length}</p>
-            <p>Rating: ${film.rating}</p>
-        `;
 
-        const categories = film.categories.map(category => category.category_name);
-        const categoryList = createList(categories);
-        filmDiv.appendChild(document.createTextNode("Categories: "));
-        filmDiv.appendChild(categoryList);
-
-        const actors = film.cast.map(actor => `${actor.first_name} ${actor.last_name}`);
-        const actorList = createList(actors);
-        filmDiv.appendChild(document.createTextNode("Actors: "));
-        filmDiv.appendChild(actorList);
+        const filmPoster = document.createElement("div");
+        filmPoster.className = "film-poster";
 
         const images = film.image.map(image => {
             const img = document.createElement("img");
@@ -52,12 +39,37 @@ async function fetchFilms() {
         }
         );
         for (const image of images) {
-            filmDiv.appendChild(image);
+            filmPoster.appendChild(image);
         }
+
+        filmDiv.appendChild(filmPoster);
+
+        const filmInfo = document.createElement("div");
+        filmInfo.className = "film-info";
+        filmInfo.innerHTML = `
+            <h3>${film.title} (${film.year})</h3>
+            <p>Director: ${film.director}</p>
+        `;
+
+        const categories = film.categories.map(category => category.category_name.toLowerCase()).join(', ');
+        const categoriesText = document.createTextNode(`Categories: ${categories}`);
+        filmInfo.appendChild(categoriesText);
+        filmInfo.appendChild(document.createElement("br"));
+
+        const actors = film.cast.map(actor => `${actor.first_name} ${actor.last_name}`).join(', ');
+        const actorsText = document.createTextNode(`Actors: ${actors}`);
+        filmInfo.appendChild(actorsText);
+
+        filmDiv.appendChild(filmInfo);
+
+        const filmRating = document.createElement("div");
+        filmRating.className = "film-rating";
+        filmRating.textContent = `IMDb: ${film.rating}`;
+        filmRating.style.color = getRatingColor(film.rating);
+        filmDiv.appendChild(filmRating);
 
         filmList.appendChild(filmDiv);
     }
 }
-
 
 fetchFilms();
