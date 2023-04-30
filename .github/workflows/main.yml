@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [frontend_dev]
+    branches: [master]
 jobs:
   build:
     name: Check and Build
