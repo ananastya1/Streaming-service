@@ -46,3 +46,21 @@ jobs:
           file: Dockerfile
           command: down
           remove-volumes: true
+          
+  deploy-to-server:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Authenticate
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{secrets.SSH_HOST}}
+        key: ${{secrets.SSH_KEY}}
+        username: ${{secrets.SSH_USERNAME}}
+        
+    - name: Deploy App
+      run: |
+        mkdir test
+        cd test
+        git clone git@github.com:M ananastya1/Streaming-service.git
+        echo "Deploy successful"
