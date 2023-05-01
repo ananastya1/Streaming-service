@@ -45,6 +45,12 @@ async def get_films():
     return [await get_film_with_categories(film) for film in films]
 
 
+@app.get("/films/search", response_model=List[GetCategoryFilms])
+async def search_films(name: str):
+    films = await Films.filter(title__icontains=name).prefetch_related("categories", "cast", "image")
+    return [await get_film_with_categories(film) for film in films]
+
+
 async def get_film(film_id: int):
     film = await Films.get_or_none(id=film_id).prefetch_related("categories")
     if film is None:
@@ -79,8 +85,8 @@ async def read_film(film_id: int):
 async def create_film_endpoint(film: FilmCreate):
     return await create_film(film)
 
-DATABASE_URL = "postgres://" + DB_user + ":" + DB_password + "@localhost:5432/films"
 
+DATABASE_URL = "postgres://" + DB_user + ":" + DB_password + "@localhost:5432/films"
 register_tortoise(
     app,
     db_url=DATABASE_URL,

@@ -31,10 +31,17 @@
             font-weight: bold;
             font-size: 1.2rem;
         }
+
     </style>
 </head>
 <body>
+<div>
 <h1>Film Catalog</h1>
+<form action="/films/search" method="get" id="form">
+  <input type="text" id="search" value=""/>
+  <button id="btn" type="submit" >Search</button>
+</form>
+</div>
 <div id="films">
     <!-- Films will be listed here -->
 </div>

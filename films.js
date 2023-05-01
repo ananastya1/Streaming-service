@@ -1,5 +1,7 @@
 const API_URL = "http://localhost:8000";
-
+let form = document.getElementById('form');
+let value1 = document.getElementById('search');
+console.log(form);
 
 function getRatingColor(rating) {
     if (rating >= 7) {
@@ -11,15 +13,7 @@ function getRatingColor(rating) {
     }
 }
 
-
-async function fetchFilms() {
-    const response = await fetch(`${API_URL}/films`);
-    if (!response.ok) {
-        console.error("Error fetching films:", response.status, response.statusText);
-        return;
-    }
-    const films = await response.json();
-
+function film_view(films){
     console.log("Fetched films:", films);
 
     const filmList = document.getElementById("films");
@@ -71,5 +65,39 @@ async function fetchFilms() {
         filmList.appendChild(filmDiv);
     }
 }
+function clearBox()
+{
+    document.getElementById('films').innerHTML = "";
+}
+async function fetchFilms() {
+    const response = await fetch(`${API_URL}/films`);
+    if (!response.ok) {
+        console.error("Error fetching films:", response.status, response.statusText);
+        return;
+    }
+    const films = await response.json();
+    clearBox();
+    film_view(films);
 
+}
+
+async function event(value){
+   //var value = document.getElementById('search').value;
+   //alert(value);
+   response = await fetch(`${API_URL}/films/search?name=${value}`);
+   if (!response.ok) {
+       console.error("Error fetching films:", response.status, response.statusText);
+       return;
+   }
+   const films = await response.json();
+   clearBox();
+   film_view(films);
+}
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    let value = value1.value;
+    console.log(value);
+    event(value);
+})
 fetchFilms();
