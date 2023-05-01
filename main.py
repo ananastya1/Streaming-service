@@ -86,8 +86,8 @@ async def create_film_endpoint(film: FilmCreate):
     return await create_film(film)
 
 
-DATABASE_URL = "postgres://" + DB_user + ":" + DB_password + "@localhost:5432/films"
-
+# DATABASE_URL = "postgres://" + DB_user + ":" + DB_password + "@localhost:5432/films"
+DATABASE_URL = "postgres://postgres:10272@localhost:5432/films"
 register_tortoise(
     app,
     db_url=DATABASE_URL,
