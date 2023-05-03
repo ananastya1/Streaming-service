@@ -46,3 +46,19 @@ jobs:
           file: Dockerfile
           command: down
           remove-volumes: true
+          
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: connect to server and deploy the application
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          cd ${{ secrets.WORK_DIR }}
+          git checkout ${{ secrets.MAIN_BRANCH }}
+          git pull
+          echo "Deploy successful"
