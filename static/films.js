@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8000";
+const API_URL = `http://$(REQUEST_URL}`;
 let form = document.getElementById('form');
 let value1 = document.getElementById('search');
 console.log(form);

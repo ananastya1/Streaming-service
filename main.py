@@ -3,7 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.params import Depends, Path
 from tortoise.contrib.fastapi import register_tortoise
 import tortoise.contrib.pydantic
-# from tortoise. import
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from typing import List
 from schemas import FilmCreate, Film, GetCategoryFilms, GetCategory, FilmActor, FilmImage
 from models import Films
@@ -11,6 +12,8 @@ import uvicorn
 import logging
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.add_middleware(
     CORSMiddleware,
@@ -86,8 +89,12 @@ async def create_film_endpoint(film: FilmCreate):
     return await create_film(film)
 
 
-# DATABASE_URL = "postgres://" + DB_user + ":" + DB_password + "@localhost:5432/films"
-DATABASE_URL = "postgres://postgres:10272@localhost:5432/films"
+@app.get("/")
+async def read_index():
+    return FileResponse("static/index.html")
+
+
+DATABASE_URL = f"postgres://{DB_USER}:{DB_PASSWORD}@{DB_URL}/test"
 register_tortoise(
     app,
     db_url=DATABASE_URL,
@@ -97,5 +104,5 @@ register_tortoise(
 )
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000, lifespan='on', log_level="info")
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
