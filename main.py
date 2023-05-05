@@ -10,6 +10,7 @@ from schemas import FilmCreate, Film, GetCategoryFilms, GetCategory, FilmActor, 
 from models import Films
 import uvicorn
 import logging
+import os
 
 app = FastAPI()
 
@@ -93,7 +94,9 @@ async def create_film_endpoint(film: FilmCreate):
 async def read_index():
     return FileResponse("static/index.html")
 
-
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.environ.get('DB_PASSWORD')
+DB_URL = os.environ.get('DB_URL')
 DATABASE_URL = f"postgres://{DB_USER}:{DB_PASSWORD}@{DB_URL}/test"
 register_tortoise(
     app,
