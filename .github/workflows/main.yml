@@ -47,7 +47,6 @@ jobs:
           command: down
           remove-volumes: true
       - name: docker login
-        uses: actions/checkout@v2
         env:
           DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
           DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
