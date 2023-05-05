@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [master]
+    branches: [ master ]
 jobs:
   build:
     name: Check and Build
@@ -46,19 +46,31 @@ jobs:
           file: Dockerfile
           command: down
           remove-volumes: true
-          
+      - name: docker login
+        uses: actions/checkout@v2
+        env:
+          DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD 
+          - name: Build the Docker image
+            run: docker build . --file Dockerfile --tag niksgont/server-sna:$(date +%s)
+
+          - name: Docker Push
+            run: docker push niksgont/server-sna
+
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-    - name: connect to server and deploy the application
-      uses: appleboy/ssh-action@v0.1.10
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        key: ${{ secrets.SSH_KEY }}
-        script: |
-          cd ${{ secrets.WORK_DIR }}
-          git checkout ${{ secrets.MAIN_BRANCH }}
-          git pull
-          echo "Deploy successful"
+      - name: connect to server and deploy the application
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ${{ secrets.WORK_DIR }}
+            git checkout ${{ secrets.MAIN_BRANCH }}
+            git pull
+            echo "Deploy successful"
