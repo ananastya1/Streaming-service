@@ -69,6 +69,7 @@ jobs:
 
   deploy:
     name: Deploy
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: connect to server and deploy the application
@@ -78,6 +79,9 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+            docker pull niksgont/server-sna:master
+            docker run -d --name nastya-python -e DB_USER=${{ secrets.DB_USER }} -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} -e DB_URL=${{ secrets.DB_URL }} -e REQUEST_URL='159.89.215.206:8000' -p 8012:8000 nastya:1
             cd ${{ secrets.WORK_DIR }}
             git checkout ${{ secrets.MAIN_BRANCH }}
             git pull
