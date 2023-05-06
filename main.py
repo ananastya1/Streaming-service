@@ -107,5 +107,5 @@ register_tortoise(
 )
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000, lifespan='on', log_level="info")
+    uvicorn.run(app, host="0.0.0.0", port=8012, lifespan='on', log_level="info")
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
