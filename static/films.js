@@ -1,4 +1,4 @@
-const API_URL = `http://159.89.215.206:8000`;
+const API_URL = "http://159.89.215.206:8000";
 let form = document.getElementById('form');
 let value1 = document.getElementById('search');
 console.log(form);
