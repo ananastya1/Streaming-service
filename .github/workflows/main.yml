@@ -79,10 +79,10 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
             docker pull niksgont/server-sna:master
             docker run -d --name nastya-python -e DB_USER=${{ secrets.DB_USER }} -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} -e DB_URL=${{ secrets.DB_URL }} -e REQUEST_URL='159.89.215.206:8000' -p 8012:8000 niksgont/server-sna
             cd ${{ secrets.WORK_DIR }}
             git checkout ${{ secrets.MAIN_BRANCH }}
+            git stash save --include-untracked "Stashing local changes before deployment"
             git pull
             echo "Deploy successful"
