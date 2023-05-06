@@ -1,8 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.params import Depends, Path
+from prometheus_fastapi_instrumentator import Instrumentator
 from tortoise.contrib.fastapi import register_tortoise
-import tortoise.contrib.pydantic
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from typing import List
@@ -13,6 +12,8 @@ import logging
 import os
 
 app = FastAPI()
+
+Instrumentator().instrument(app).expose(app)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
