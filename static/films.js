@@ -1,7 +1,7 @@
 const API_URL = "http://159.89.215.206:8000";
 let form = document.getElementById('form');
 let value1 = document.getElementById('search');
-console.log(form);
+
 
 function getRatingColor(rating) {
     if (rating >= 7) {
@@ -14,7 +14,6 @@ function getRatingColor(rating) {
 }
 
 function film_view(films){
-    console.log("Fetched films:", films);
 
     const filmList = document.getElementById("films");
 
@@ -82,8 +81,6 @@ async function fetchFilms() {
 }
 
 async function event(value){
-   //var value = document.getElementById('search').value;
-   //alert(value);
    response = await fetch(`${API_URL}/films/search?name=${value}`);
    if (!response.ok) {
        console.error("Error fetching films:", response.status, response.statusText);
@@ -97,7 +94,6 @@ form.addEventListener("submit", (e) => {
     e.preventDefault();
 
     let value = value1.value;
-    console.log(value);
     event(value);
 })
 fetchFilms();
