@@ -16,5 +16,5 @@ Use the link (was provided before) to access the web page.
 The list of all available films will be loaded straight away.  
 You can use search bar to find some specific film by its full or partial name.  
 To obtain the list of all films again, search with empty name.  
-You can find metrics page by http://159.89.215.206:8012/metrics
-Also you can have a look on whole database data by http://159.89.215.206:8012/films
+You can find metrics page by http://159.89.215.206:8012/metrics  
+Also you can have a look on whole database data by http://159.89.215.206:8012/films  
